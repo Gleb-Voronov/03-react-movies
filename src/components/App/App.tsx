@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import SearchBar from '../SearchBar/SeacrhBar';
+import SearchBar from '../SeacrhBar/SeacrhBar';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';

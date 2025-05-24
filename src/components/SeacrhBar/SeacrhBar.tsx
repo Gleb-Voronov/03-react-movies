@@ -1,5 +1,5 @@
 import  { FormEvent, useState } from 'react';
-import styles from './SearchBar.module.css';
+import styles from './SeacrhBar.module.css';
 import toast from 'react-hot-toast';
 
 interface SearchBarProps {
