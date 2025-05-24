@@ -8,8 +8,12 @@ interface MovieModalProps {
 }
 
 const MovieModal = ({ movie, onClose }: MovieModalProps) => {
-  // Закриття по Escape
+
   useEffect(() => {
+ 
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -19,11 +23,13 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
     window.addEventListener('keydown', handleEsc);
 
     return () => {
+    
+      document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleEsc);
     };
   }, [onClose]);
 
-  // Закриття по кліку на фон (а не на контент)
+  
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
