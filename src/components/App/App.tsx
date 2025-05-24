@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
-
+import styles from './App.module.css';
 import { Movie } from '../../types/movie';
 import { fetchMovies } from '../../services/movieService';
 import MovieGrid from '../MovieGrid/MovieGrid';
@@ -15,10 +15,10 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const handleSearch = async (formData: FormData) => {
-    const query = formData.get('query')?.toString().trim();
+  const handleSearch = async (query: string) => {
+    const trimmedQuery = query.trim();
 
-    if (!query) {
+    if (!trimmedQuery) {
       toast.error('Please enter your search query.');
       return;
     }
@@ -28,10 +28,12 @@ const App = () => {
     setIsError(false);
 
     try {
-      const fetchedMovies = await fetchMovies(query);
+      const fetchedMovies = await fetchMovies(trimmedQuery);
+
       if (fetchedMovies.length === 0) {
         toast.error('No movies found for your request.');
       }
+
       setMovies(fetchedMovies);
     } catch (error) {
       console.error(error);
@@ -51,10 +53,10 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className={styles.app}>
       <SearchBar onSubmit={handleSearch} />
-      {isLoading && <Loader />}
       {isError && <ErrorMessage />}
+      {isLoading && <Loader />}
       <MovieGrid movies={movies} onSelect={handleSelectMovie} />
       {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
