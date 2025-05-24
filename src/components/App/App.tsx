@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
+
 import styles from './App.module.css';
 import { Movie } from '../../types/movie';
 import { fetchMovies } from '../../services/movieService';
+
+import SearchBar from '../SearchBar/SearchBar';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import SearchBar from '../SearchBar/SearchBar';
 import MovieModal from '../MovieModal/MovieModal';
-import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -16,14 +17,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const handleSearch = async (formData: FormData) => {
-    const query = formData.get('query')?.toString().trim();
-
-    if (!query) {
-      toast.error('Please enter your search query.');
-      return;
-    }
-
+  const handleSearch = async (query: string) => {
     setMovies([]);
     setIsLoading(true);
     setIsError(false);
@@ -53,19 +47,18 @@ const App = () => {
     setSelectedMovie(null);
   };
 
- return (
-  <div className={styles.app}>
-    <Toaster position="top-right" reverseOrder={false} />
-
-    <SearchBar action={handleSearch} />
-    {isError && <ErrorMessage />}
-    {isLoading && <Loader />}
-    <MovieGrid movies={movies} onSelect={handleSelectMovie} />
-    {selectedMovie && (
-      <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
-    )}
-  </div>
-);
+  return (
+    <div className={styles.app}>
+      <Toaster position="top-right" reverseOrder={false} />
+      <SearchBar onSubmit={handleSearch} />
+      {isError && <ErrorMessage />}
+      {isLoading && <Loader />}
+      <MovieGrid movies={movies} onSelect={handleSelectMovie} />
+      {selectedMovie && (
+        <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
+      )}
+    </div>
+  );
 };
 
 export default App;
