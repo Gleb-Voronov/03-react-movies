@@ -15,10 +15,10 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const handleSearch = async (query: string) => {
-    const trimmedQuery = query.trim();
+  const handleSearch = async (formData: FormData) => {
+    const query = formData.get('query')?.toString().trim();
 
-    if (!trimmedQuery) {
+    if (!query) {
       toast.error('Please enter your search query.');
       return;
     }
@@ -28,7 +28,7 @@ const App = () => {
     setIsError(false);
 
     try {
-      const fetchedMovies = await fetchMovies(trimmedQuery);
+      const fetchedMovies = await fetchMovies(query);
 
       if (fetchedMovies.length === 0) {
         toast.error('No movies found for your request.');
@@ -54,7 +54,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <SearchBar onSubmit={handleSearch} />
+      <SearchBar action={handleSearch} />
       {isError && <ErrorMessage />}
       {isLoading && <Loader />}
       <MovieGrid movies={movies} onSelect={handleSelectMovie} />
