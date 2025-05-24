@@ -8,6 +8,7 @@ import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import SearchBar from '../SearchBar/SearchBar';
 import MovieModal from '../MovieModal/MovieModal';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -52,17 +53,19 @@ const App = () => {
     setSelectedMovie(null);
   };
 
-  return (
-    <div className={styles.app}>
-      <SearchBar action={handleSearch} />
-      {isError && <ErrorMessage />}
-      {isLoading && <Loader />}
-      <MovieGrid movies={movies} onSelect={handleSelectMovie} />
-      {selectedMovie && (
-        <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
-      )}
-    </div>
-  );
+ return (
+  <div className={styles.app}>
+    <Toaster position="top-right" reverseOrder={false} />
+
+    <SearchBar action={handleSearch} />
+    {isError && <ErrorMessage />}
+    {isLoading && <Loader />}
+    <MovieGrid movies={movies} onSelect={handleSelectMovie} />
+    {selectedMovie && (
+      <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
+    )}
+  </div>
+);
 };
 
 export default App;
